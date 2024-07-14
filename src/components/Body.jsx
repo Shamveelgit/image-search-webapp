@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ImageBody from './ImageBody';
 
 export default function Body() {
   const apiUrl = "https://api.unsplash.com/";
@@ -6,30 +7,35 @@ export default function Body() {
   const [page, setPage] = useState(1);
   const [images, setImages] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [skeltonLoader,setSkeltonValue] = useState(true) 
-  var [dummyApi,SetDummy] = useState([1,2,3,4,5,6,7,8,9,0,22,12,323,])
+  const [skeletonLoader, setSkeletonLoader] = useState(true);
+  const dummyApi = Array(12).fill(0);
 
   useEffect(() => {
-    try {
-      setTimeout(() => {
-        fetch(`${apiUrl}/photos?page=${page}&per_page=20&client_id=${accessToken}`)
+    setSkeletonLoader(true);
+    fetch(`${apiUrl}/photos?page=${page}&per_page=20&client_id=${accessToken}`)
       .then((response) => response.json())
-      .then((data) => {setImages(data)})
-      .catch((error) => console.log(error));
-      setSkeltonValue(false)
-      },2000)
-    }
-    catch {
-      console.log("error");
-    }
-  }, [page,setSkeltonValue,skeltonLoader]);
+      .then((data) => {
+        setImages(data);
+        setSkeletonLoader(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setSkeletonLoader(false);
+      });
+  }, [page]);
 
   const handleOnSearch = () => {
-    setImages([])
+    setSkeletonLoader(true);
     fetch(`${apiUrl}search/photos?page=1&query=${searchValue}&client_id=${accessToken}`)
       .then((response) => response.json())
-      .then((data) => {setImages(data.results); console.log(data)})
-      .catch((error) => console.log(error));
+      .then((data) => {
+        setImages(data.results);
+        setSkeletonLoader(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setSkeletonLoader(false);
+      });
   };
 
   const searchBox = (event) => {
@@ -38,8 +44,8 @@ export default function Body() {
 
   return (
     <main className="min-h-screen">
-      <section className="w-full min-h-[22rem] bg-fullScreen max-2xl:bg-largeScreen bg-mainImage bg-no-repeat bg-scroll object-fill bg-center flex items-center justify-center">
-        <h1 className="text-center text-[250%] capitalize w-full text-white font-Ui translate-y-6">
+      <section className="w-full min-h-[22rem]  max-2xl:bg-largeScreen 2xl:bg-screenWidth bg-mainImage bg-no-repeat bg-scroll object-fill bg-center flex items-center justify-center">
+        <h1 className="text-center text-[250%] max-md:text-lg capitalize w-full text-white font-Ui translate-y-6">
           Discover the Art of Artists,<br />
           Photos of Professional Photographers
         </h1>
@@ -58,26 +64,30 @@ export default function Body() {
           Search
         </button>
       </div>
-      <section className="w-full flex justify-center items-center">
-        <div className="columns-4 p-5 w-full">
-          {
-            skeltonLoader ? dummyApi.map((val,index) => {
-              return (
-                <div key={index} className='m-5 w-11/12 min-h-svh bg-gray-600 rounded-lg animate-pulse'>
-
-                </div>
-              )
-            })  : images.map((image, index) => (
-              <div key={index} className={`m-5`}>
-                <img key={index}
-                  src={image.urls.regular}
-                  alt={image.alt_description}
-                  className="w-full h-auto object-cover rounded-lg max-h-svh"
-                />
+      <section className="flex items-center justify-center">
+          <div className=' max-w-7xl bg-largeScreen'>
+            <ImageBody skeletonLoader={skeletonLoader} dummyApi={dummyApi} images={images}>
+              <div className='columns-6 max-sm:columns-1 max-md:columns-2 max-lg:columns-3 max-xl:columns-4 max-2xl:columns-4 p-5 w-full'>
+                  {skeletonLoader
+                      ? dummyApi.map((_, index) => (
+                          <div
+                            key={index}
+                            className="m-5 mb-0 rounded-lg w-72 min-h-80 bg-gray-600 animate-pulse"
+                          ></div>
+                        ))
+                      : images.map((image, index) => (
+                          <div key={index} className="m-5 mb-0 rounded-lg bg-gray-600">
+                            <img
+                              src={image.urls.regular}
+                              alt={image.alt_description}
+                              className="w-full h-auto object-cover rounded-lg max-h-svh"
+                            />
+                          </div>
+                        ))}
               </div>
-            ))
-          }
-        </div>
+            </ImageBody>
+              <a href='*' className='text-white animate-pulse m-10 text-center'>Loading ...</a>
+          </div>
       </section>
     </main>
   );

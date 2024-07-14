@@ -14,7 +14,8 @@ export default {
       },
       backgroundSize : {
         fullScreen : "1280px 800px" ,
-        largeScreen : "1536px 800px" 
+        largeScreen : "1536px 800px", 
+        screenWidth : "100% 800px" 
       },
       borderRadius : {
         leftSide : "28px 0 0 28px",
