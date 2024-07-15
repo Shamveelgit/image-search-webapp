@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ImageBody from './ImageBody';
+import SkeltonLoading from './SkeltonLoading';
 
 export default function Body() {
   const apiUrl = "https://api.unsplash.com/";
@@ -15,7 +16,7 @@ export default function Body() {
     fetch(`${apiUrl}/photos?page=${page}&per_page=20&client_id=${accessToken}`)
       .then((response) => response.json())
       .then((data) => {
-        setImages(data);
+        setImages(images.concat(data));
         setSkeletonLoader(false);
       })
       .catch((error) => {
@@ -34,7 +35,7 @@ export default function Body() {
       })
       .catch((error) => {
         console.log(error);
-        setSkeletonLoader(false);
+        setSkeletonLoader(true);
       });
   };
 
@@ -68,15 +69,9 @@ export default function Body() {
           <div className=' max-w-7xl bg-largeScreen'>
             <ImageBody skeletonLoader={skeletonLoader} dummyApi={dummyApi} images={images}>
               <div className='columns-6 max-sm:columns-1 max-md:columns-2 max-lg:columns-3 max-xl:columns-4 max-2xl:columns-4 p-5 w-full'>
-                  {skeletonLoader
-                      ? dummyApi.map((_, index) => (
-                          <div
-                            key={index}
-                            className="m-5 mb-0 rounded-lg w-72 min-h-80 bg-gray-600 animate-pulse"
-                          ></div>
-                        ))
-                      : images.map((image, index) => (
-                          <div key={index} className="m-5 mb-0 rounded-lg bg-gray-600">
+                  {
+                  images.map((image, index) => (
+                          <div key={index} className={`m-5 mb-0 rounded-lg bg-gray-600 ${skeletonLoader ? 'animate-pulse' : ""}`}>
                             <img
                               src={image.urls.regular}
                               alt={image.alt_description}
@@ -86,6 +81,7 @@ export default function Body() {
                         ))}
               </div>
             </ImageBody>
+            <SkeltonLoading page={page} setPage={setPage}/>
               <a href='*' className='text-white animate-pulse m-10 text-center'>Loading ...</a>
           </div>
       </section>
