@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ImageBody from './ImageBody';
-import SkeltonLoading from './SkeltonLoading';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ImageSection from './ImageSection';
 import SearchSection from './SearchSection';
@@ -43,7 +41,7 @@ export default function Body() {
         return [...oldImages , ...data.results]
       });
     } catch (error) {
-      console.error(error);
+      console.error("internet error");
     }
   };
 
@@ -57,7 +55,7 @@ export default function Body() {
         <Routes>
           <Route path='/' element={
             <>
-              <SearchSection handleOnSearch={handleOnSearch} handleSearchChange={handleSearchChange} setImages={setImages} page={page} />
+              <SearchSection setPage={setPage} handleOnSearch={handleOnSearch} handleSearchChange={handleSearchChange} setImages={setImages} page={page} />
               <ImageSection images={images} page={page} setPage={setPage} />
             </>
           } />

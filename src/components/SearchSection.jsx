@@ -2,7 +2,7 @@ import React from 'react'
 
 function SearchSection( props) {
 
-    const {handleOnSearch,handleSearchChange} = props
+    const {handleOnSearch,handleSearchChange,setImages,setPage} = props
 
   return (
       <>
