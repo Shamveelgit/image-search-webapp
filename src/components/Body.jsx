@@ -9,6 +9,8 @@ export default function Body() {
   const [page, setPage] = useState(1);
   const [images, setImages] = useState([]);
   const [searchValue, setSearchValue] = useState(null);
+  const [loadValue,setLoadValue] = useState('Loading...')
+  const [interSect,setInterSect] = useState(false)
 
   useEffect(() => {
     if(searchValue) {
@@ -18,13 +20,26 @@ export default function Body() {
       console.log("not search value");
       const fetchImages = async () => {
         try {
-          const response = await fetch(`${apiUrl}/photos?page=${page}&per_page=20&client_id=${accessToken}`);
+          const response = await fetch(`${apiUrl}/photos?page=${page}&per_page=10&client_id=${accessToken}`);
           const data = await response.json();
-          setImages((oldImages) => {
-            return [...oldImages, ...data]
-          });
+          if (response.ok) {
+            setLoadValue("loading...")
+            setImages((oldImages) => {
+              return [...oldImages, ...data]
+            })
+            setTimeout(() => {
+              setInterSect(true)
+
+            },2000)
+          }else{
+            setLoadValue("Server Not Responding..")
+            setInterSect(false)
+          }
         } catch (error) {
           console.log("Check your internet");
+          setLoadValue("Check Your Internet...")
+          setInterSect(false)
+
         }
       };
     fetchImages();
@@ -37,11 +52,20 @@ export default function Body() {
     try {
       const response = await fetch(`${apiUrl}/search/photos?page=${page}&query=${searchValue}&client_id=${accessToken}`);
       const data = await response.json();
-      setImages((oldImages) => {
-        return [...oldImages , ...data.results]
-      });
+      if (response.ok) {
+        setLoadValue("loading...")
+        setImages((oldImages) => {
+          return [...oldImages, ...data.results]
+        });
+      } else {
+        setLoadValue("Check Your Internet...")
+        setInterSect(false)
+      }
     } catch (error) {
       console.error("internet error");
+      setLoadValue("Check Your Internet...")
+      setInterSect(false)
+
     }
   };
 
@@ -56,7 +80,7 @@ export default function Body() {
           <Route path='/' element={
             <>
               <SearchSection setPage={setPage} handleOnSearch={handleOnSearch} handleSearchChange={handleSearchChange} setImages={setImages} page={page} />
-              <ImageSection images={images} page={page} setPage={setPage} />
+              <ImageSection interSect={interSect} setInterSect={setInterSect} loadValue={loadValue} images={images} page={page} setPage={setPage} />
             </>
           } />
 

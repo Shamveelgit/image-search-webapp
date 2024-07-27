@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-export default function useInterSection(option) {
+export default function useInterSection(option,intersectLoad) {
     let [isVisible, setVisible] = useState(false)
     var targetRef = useRef(null)
 
