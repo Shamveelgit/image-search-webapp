@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-export default function useInterSection(option,intersectLoad) {
+export default function useInterSection(option,interSect) {
     let [isVisible, setVisible] = useState(false)
     var targetRef = useRef(null)
 
@@ -11,7 +11,11 @@ export default function useInterSection(option,intersectLoad) {
             })
         },option)
 
-        observer.observe(targetRef.current)
+        if(interSect) {
+            observer.observe(targetRef.current)
+        }else {
+            observer.unobserve(targetRef.current)
+        }
     },[option])
 
 

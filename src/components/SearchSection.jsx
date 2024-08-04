@@ -1,8 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux';
+import HandleOnSearch from './functions/HandleOnSearch';
 
 function SearchSection( props) {
 
-    const {handleOnSearch,handleSearchChange,setImages,setPage} = props
+    const {dispatch} = props
+
+    console.log("search section");
+
+    const handleOnSearch = HandleOnSearch()
+
+    const handleSearchChange = (event) => {
+        dispatch({
+          type : "input",
+          payload : event.target.value
+        })
+      };
+
+      
 
   return (
       <>
@@ -21,8 +36,14 @@ function SearchSection( props) {
               />
               <button
                   onClick={() => {
-                      setImages([])
-                      setPage(1)
+                    dispatch({
+                        type : "create-images",
+                        payload : []
+                    })
+                      dispatch({
+                        type : "page",
+                        payload : 1
+                      })
                       handleOnSearch()
                   }}
                   className="peer-focus:outline-2 peer-focus:outline-offset-0 peer-focus:outline outline-green-600 text-gray-300 font-semibold hover:text-white w-[7rem] bg-green-600 h-[3.5rem] translate-y-[-50%] rounded-rightSide text-xl font-Ui"

@@ -1,12 +1,80 @@
-import { createStore } from "redux";
+import { act } from "react";
+import { combineReducers, createStore } from "redux";
 
 
+const INITIAL_STATE = {
+    apiUrl : "https://api.unsplash.com",
+    apiAccessToken :"JHFGRqSNi5MGfJgMmu_R_tfDweoxn2b_W7zI2ctvuTc",
+    apiPage : 1,
+    images : [],
+    searchValue : null,
+    loadValue : 'loading...',
+    intersectStatus : false,
+    imgLoading :true,
+    intersectVisible : false
 
-function reducer(state = {},action) {
-    console.log("success");
 }
 
+function reducer(state = INITIAL_STATE , action) {
+    return {
+        ...state,
+        apiPage : apiPage(state.apiPage,action),
+        searchValue : input(state.searchValue,action),
+        images : images(state.images,action),
+        intersectStatus : isVisible(state.intersectStatus,action),
+        imgLoading : isVisible(state.imgLoading,action),
+        intersectVisible : isVisible(state.intersectVisible,action),
+        loadValue : loadValue(state.loadValue,action)
+    }
+}
+function loadValue(state,action) {
+    if(action.type === "loadvalue") {
+        return action.payload
+    }
+}
+function apiPage(prevState, action) {
+    switch(action.type) {
+        case "page-up" : return prevState ++
+        case "page-down" : return prevState --
+        case "page" : return action.payload
+        default : return prevState
+    }
+}
+
+function setApiPage(prevState,action) {
+    switch(action.type) {
+        case "increment" : prevState + 1
+        default : prevState
+    }
+}
+function input(prevState,action) {
+    if(action.type == "input") {
+        return action.payload
+    } else {
+        return prevState    
+    }
+}
+
+function images(prevState,action) {
+    if(action.type === "add-images") {
+        console.log(action.payload);
+        return prevState.concat(action.payload)
+    }else if(action.type === "create-images") {
+        return action.payload
+    }else {
+        return prevState
+    }
+}
+
+function isVisible(prevState,action) {
+    switch(action.type) {
+        case "intersect" : return action.payload
+        case "img-loading" : return action.payload
+        default : return prevState
+    }
+}
+
+
 const store = createStore(reducer)
-const state = store.getState()
 
 export default store
