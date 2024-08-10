@@ -5,9 +5,12 @@ export default function ImageBody(props) {
         children
     } = props
 
+    // console.log(children);
+    
+
   return (
     <>
-      {children}
+      {children}      
     </>
   )
 }

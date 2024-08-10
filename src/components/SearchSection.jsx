@@ -26,7 +26,7 @@ function SearchSection( props) {
 
   return (
       <>
-          <section className="w-full min-h-[22rem] max-2xl:bg-largeScreen 2xl:bg-screenWidth bg-mainImage bg-no-repeat bg-scroll object-fill bg-center flex items-center justify-center">
+          <section className="w-full min-h-[22rem] max-2xl:bg-largeScreen 2xl:bg-screenWidth max-sm:bg-phoneImage max-md:bg-tabImage max-lg:bg-pcImage max-xl:bg-tvImage max-2xl:bg-mainImage bg-mainImage bg-no-repeat bg-scroll object-fill bg-center flex items-center justify-center">
               <h1 className="text-center text-[250%] max-md:text-lg capitalize w-full text-white font-Ui translate-y-6">
                   Discover the Art of Artists,<br />
                   Photos of Professional Photographers

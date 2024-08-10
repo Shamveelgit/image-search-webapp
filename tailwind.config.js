@@ -8,6 +8,10 @@ export default {
     extend: {
       backgroundImage : {
         mainImage : "url('../src/assets/bg-img.jpg')",
+        phoneImage : "url('../src/assets/bg-img-phone.jpg')",
+        tabImage : "url('../src/assets/bg-img-tab.jpg')",
+        pcImage : "url('../src/assets/bg-img-pc.jpg')",
+        tvImage : "url('../src/assets/bg-img-tv.jpg')",
         halfBlack : "linear-gradient(360deg, rgba(0,0,0,1),rgba(255, 255, 255, 0),rgba(255, 255, 255, 0))"
       },
       fontFamily : {
