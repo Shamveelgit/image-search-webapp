@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
-import HandleOnSearch from './functions/HandleOnSearch';
+import { useDispatch, useSelector } from 'react-redux';
+import handleOnSearch from './functions/HandleOnSearch';
 
 function SearchSection( props) {
 
-    const {dispatch} = props
+    const apiUrl = useSelector(state => state.apiUrl)
+    const page = useSelector(state => state.apiPage)
+    const searchValue = useSelector(state => state.searchValue)
+    const accessToken = useSelector(state => state.apiAccessToken)
 
-    console.log("search section");
-
-    const handleOnSearch = HandleOnSearch()
+    const dispatch =useDispatch()
 
     const handleSearchChange = (event) => {
         dispatch({
@@ -16,6 +17,10 @@ function SearchSection( props) {
           payload : event.target.value
         })
       };
+
+      useEffect(() =>{
+
+      },[])
 
       
 
@@ -44,7 +49,7 @@ function SearchSection( props) {
                         type : "page",
                         payload : 1
                       })
-                      handleOnSearch()
+                      handleOnSearch(apiUrl,page,searchValue,accessToken,dispatch)
                   }}
                   className="peer-focus:outline-2 peer-focus:outline-offset-0 peer-focus:outline outline-green-600 text-gray-300 font-semibold hover:text-white w-[7rem] bg-green-600 h-[3.5rem] translate-y-[-50%] rounded-rightSide text-xl font-Ui"
               >

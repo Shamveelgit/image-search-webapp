@@ -57,8 +57,7 @@ function input(prevState,action) {
 
 function images(prevState,action) {
     if(action.type === "add-images") {
-        console.log(action.payload);
-        return prevState.concat(action.payload)
+        return prevState.concat(action.payload          )
     }else if(action.type === "create-images") {
         return action.payload
     }else {
