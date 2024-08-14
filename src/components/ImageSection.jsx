@@ -19,9 +19,6 @@ function ImageSection() {
 
   const [imgLoading, setImgLoading] = useState(true)
 
-  console.log(images);
-  
-
   console.log("image section");
 
   let id = 0
@@ -65,10 +62,10 @@ function ImageSection() {
     })
     : null
 
-  let combineImages = image_4 ? [image_1, image_2, image_3, image_4] : image_3 ? [image_1, image_2, image_3] : image_2 ? [image_1, image_2] : image_1 ? [image_1] : [image_1,image_2,image_3,image_4]
+  let combineImages = image_4 ? [image_1, image_2, image_3, image_4] : image_3 ? [image_1, image_2, image_3] : image_2 ? [image_1, image_2] : image_1 ? [image_1] : [image_1, image_2, image_3, image_4]
 
-  console.log(image_1,image_2,image_3,image_4);
   
+
 
 
 
@@ -81,7 +78,7 @@ function ImageSection() {
       console.log("not search value");
       const fetchImages = async () => {
         try {
-          const response = await fetch(`${apiUrl}/photos?page=${page}&per_page=10&client_id=${accessToken}`);
+          const response = await fetch(`${apiUrl}/photos?page=${page}&per_page=10&client_id=${accessToken}`);          
           const data = await response.json();
           if (response.ok) {
             dispatch({
@@ -124,6 +121,9 @@ function ImageSection() {
 
   console.log(window.innerWidth);
 
+  console.log(images);
+  
+
 
 
 
@@ -132,19 +132,17 @@ function ImageSection() {
       <section className="flex items-center justify-center">
         <div className="max-w-7xl bg-largeScreen w-full pt-5">
           <ImageBody images={images}>
-            <div key={'sa'} className={`flex max-w-full flex-wrap`}>
+            <div className={`flex max-w-full flex-wrap`}>
               {
                 combineImages.map((CImages, Cindex) => {
                   return (
-                    <>
                       <div key={Cindex} className=' max-sm:flex-[90%] max-md:flex-[50%] max-lg:flex-[33.33%] max-xl:flex-[25%] 2x flex-[16%] '>
                         {
                           CImages.map((image, index) => {
                             return (
-                              <>
-                                <div key={index} className={` group m-5 mb-0 rounded-lg bg-gray-600 break-inside-avoid relative aspect-auto min-h-40 `}>
+                                <Link to={`${image.id}`}>
+                                  <div key={image.id || index} className={` group m-5 mb-0 rounded-lg bg-gray-600 break-inside-avoid relative aspect-auto min-h-40 `}>
                                   <img
-                                    key={image.results?.id}
                                     onLoad={() => {
                                       setImgLoading(false)
                                     }}
@@ -163,16 +161,15 @@ function ImageSection() {
                                   <div className=''>
 
                                     <div className='shadow-2xl shadow-white overflow-hidden group-hover:block hidden  h-10 rounded-full w-10 absolute text-white bottom-5 bg-slate-400 left-5'>
-                                      <img key={index} src={image?.user?.profile_image?.medium} className=' cursor-pointer w-full h-full ' alt="dp" />
+                                      <img src={image?.user?.profile_image?.medium} className=' cursor-pointer w-full h-full ' alt="dp" />
                                     </div>
                                     <div className='absolute h-7 bottom-5 ml-10 min-w-9 left-8 text-emerald-50 opacity-80 hover:opacity-100 font-Ui text-sm hidden group-hover:block'>
-                                      <h5 key={index} className='text-center cursor-pointer'>{image?.user?.name}</h5>
+                                      <h5 className='text-center cursor-pointer'>{image?.user?.name}</h5>
                                     </div>
                                   </div>
 
                                 </div>
-
-                              </>
+                                </Link>
 
                             )
                           })
@@ -180,8 +177,6 @@ function ImageSection() {
                         <SkeltonLoading />
 
                       </div>
-
-                    </>
                   )
                 })
               }

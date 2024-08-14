@@ -11,7 +11,9 @@ const INITIAL_STATE = {
     loadValue : 'loading...',
     intersectStatus : false,
     imgLoading :true,
-    intersectVisible : false
+    intersectVisible : false,
+    recomendedImages : [],
+    mainImage : {}
 
 }
 
@@ -24,12 +26,23 @@ function reducer(state = INITIAL_STATE , action) {
         intersectStatus : isVisible(state.intersectStatus,action),
         imgLoading : isVisible(state.imgLoading,action),
         intersectVisible : isVisible(state.intersectVisible,action),
-        loadValue : loadValue(state.loadValue,action)
+        loadValue : loadValue(state.loadValue,action),
+        recomendedImages : recomendedImages(state.recomendedImages,action),
+        mainImage : mainImage(state.mainImage,action)
     }
 }
 function loadValue(state,action) {
     if(action.type === "loadvalue") {
         return action.payload
+    }else {
+        return state
+    }
+}
+function mainImage(state,action) {
+    if(action.type === "setMainImage") {
+        return action.payload
+    }else {
+        return state
     }
 }
 function apiPage(prevState, action) {
@@ -59,6 +72,15 @@ function images(prevState,action) {
     if(action.type === "add-images") {
         return prevState.concat(action.payload)
     }else if(action.type === "create-images") {
+        return action.payload
+    }else {
+        return prevState
+    }
+}
+function recomendedImages(prevState,action) {
+    if(action.type === "add-RecImages") {
+        return prevState.concat(action.payload)
+    }else if(action.type === "create-RecImages") {
         return action.payload
     }else {
         return prevState

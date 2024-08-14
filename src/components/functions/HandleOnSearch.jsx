@@ -1,6 +1,6 @@
 async function handleOnSearch(apiUrl,page,searchValue,accessToken,dispatch) {
   try {
-      const response = await fetch(`${apiUrl}/search/photos?page=${page}&query=${searchValue}&client_id=${accessToken}`);
+      const response = await fetch(`${apiUrl}/search/photos?page=${page}&query=${searchValue}&client_id=${accessToken}`);      
       const data = await response.json();
       if(response.ok) {
           dispatch({

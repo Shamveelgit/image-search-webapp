@@ -11,6 +11,9 @@ function SearchSection( props) {
 
     const dispatch =useDispatch()
 
+    console.log("search section running");
+    
+
     const handleSearchChange = (event) => {
         dispatch({
           type : "input",
@@ -20,7 +23,7 @@ function SearchSection( props) {
 
       useEffect(() =>{
 
-      },[])
+      },[page])
 
       
 
