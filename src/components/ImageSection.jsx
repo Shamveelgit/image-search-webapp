@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ImageBody from './ImageBody';
 import SkeltonLoading from './SkeltonLoading';
 import { Link } from 'react-router-dom';
@@ -16,63 +16,34 @@ function ImageSection() {
   const images = useSelector(state => state.images)
   const page = useSelector(state => state.apiPage)
   const searchValue = useSelector(state => state.searchValue)
+  const [screenWidth,setScreenWidth] = useState(window.innerWidth)
 
   const [imgLoading, setImgLoading] = useState(true)
+  const imageTag = useRef()
 
-  console.log("image section");
+  useEffect(() => {
+    const handlingResize = () => {
+      setScreenWidth(window.innerWidth)
+    }
+    window.addEventListener('resize',handlingResize)
+  })
 
-  let id = 0
-  let image_1 = innerWidth >= 640 ?
-    images.filter((val, index) => {
-      if (index === id) {
-        id += 4
-        return val
-      }
-    }) : images
+  const getFilteredImages = (idOffset) => images.filter((_, index) => index % 4 === idOffset);
 
-
-
-  id = 1
-  let image_2 = (innerWidth >= 768) ?
-    images.filter((val, index) => {
-      if (index === id) {
-        id += 4
-        return val
-      }
-    }) : null
-
-
-
-  id = 2
-  let image_3 = (innerWidth >= 1024) ?
-    images.filter((val, index) => {
-      if (index === id) {
-        id += 4
-        return val
-      }
-    })
-    : null
-  id = 3
-  let image_4 = innerWidth >= 1280 ?
-    images.filter((val, index) => {
-      if (index === id) {
-        id += 4
-        return val
-      }
-    })
-    : null
-
-  let combineImages = image_4 ? [image_1, image_2, image_3, image_4] : image_3 ? [image_1, image_2, image_3] : image_2 ? [image_1, image_2] : image_1 ? [image_1] : [image_1, image_2, image_3, image_4]
-
+  const image_1 = screenWidth >= 640 ? getFilteredImages(0) : images
+  const image_2 = screenWidth >= 768 ? getFilteredImages(1) : null;
+  const image_3 = screenWidth >= 1024 ? getFilteredImages(2) : null;
+  const image_4 = screenWidth >= 1280 ? getFilteredImages(3) : null;
   
-
+  // Combine only non-empty arrays
+  const combineImages = [image_1, image_2, image_3, image_4].filter(Boolean);
+  
 
 
 
 
   useEffect(() => {
     if (searchValue) {
-      console.log("search value");
       handleOnSearch(apiUrl, page, searchValue, accessToken, dispatch)
     } else {
       console.log("not search value");
@@ -118,10 +89,6 @@ function ImageSection() {
     }
 
   }, [page]);
-
-  console.log(window.innerWidth);
-
-  console.log(images);
   
 
 
@@ -140,9 +107,13 @@ function ImageSection() {
                         {
                           CImages.map((image, index) => {
                             return (
-                                <Link to={`${image.id}`}>
-                                  <div key={image.id || index} className={` group m-5 mb-0 rounded-lg bg-gray-600 break-inside-avoid relative aspect-auto min-h-40 `}>
+                                <Link to={`/photos/${image.id}`} key={index}>
+                                  <div className={` group m-5 mb-0 rounded-lg bg-gray-600 break-inside-avoid relative aspect-auto min-h-40 `}>
                                   <img
+                                  ref={imageTag}
+                                  onClick={()=> {
+                                    imageTag.current.style.animation = 'test ease 1s forwards'
+                                  }}
                                     onLoad={() => {
                                       setImgLoading(false)
                                     }}
@@ -169,7 +140,7 @@ function ImageSection() {
                                   </div>
 
                                 </div>
-                                </Link>
+                              </Link>
 
                             )
                           })

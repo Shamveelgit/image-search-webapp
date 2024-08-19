@@ -10,20 +10,27 @@ function SearchSection( props) {
     const accessToken = useSelector(state => state.apiAccessToken)
 
     const dispatch =useDispatch()
+      useEffect(() =>{
+        console.log("search section running");
+      },[])
 
-    console.log("search section running");
-    
-
-    const handleSearchChange = (event) => {
+      const handleSearchChange = (event) => {
         dispatch({
           type : "input",
           payload : event.target.value
         })
       };
+      const handleKeyEnter = (evt) => {
+        console.log(evt.key);
+        
+        if(evt.key == "Enter") {
+          handleOnSearch(apiUrl,page,searchValue,accessToken,dispatch)
+          console.log("hamdle");
+          
+        }
+        
+      }
 
-      useEffect(() =>{
-
-      },[page])
 
       
 
@@ -37,6 +44,10 @@ function SearchSection( props) {
           </section>
           <div className="w-full flex items-center justify-center">
               <input
+              onKeyDown={handleKeyEnter}
+                    onSubmit={() => {
+                    handleOnSearch(apiUrl,page,searchValue,accessToken,dispatch)
+                  }}
                   onChange={handleSearchChange}
                   className="peer font-sans text-lg p-6 focus:border-none outline-none border-none focus:outline-offset-0 w-[40%] translate-y-[-50%] h-[3.5rem] text-pretty rounded-leftSide focus:outline-2 focus:outline-green-600"
                   type="text"
@@ -44,14 +55,6 @@ function SearchSection( props) {
               />
               <button
                   onClick={() => {
-                    dispatch({
-                        type : "create-images",
-                        payload : []
-                    })
-                      dispatch({
-                        type : "page",
-                        payload : 1
-                      })
                       handleOnSearch(apiUrl,page,searchValue,accessToken,dispatch)
                   }}
                   className="peer-focus:outline-2 peer-focus:outline-offset-0 peer-focus:outline outline-green-600 text-gray-300 font-semibold hover:text-white w-[7rem] bg-green-600 h-[3.5rem] translate-y-[-50%] rounded-rightSide text-xl font-Ui"
@@ -62,4 +65,4 @@ function SearchSection( props) {
       </>
   )
 }
-export default SearchSection
+export default React.memo(SearchSection)

@@ -4,6 +4,7 @@ import Header from './components/Header'
 import Body from './components/Body'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ImagePage from './components/ImagePage'
+import ScrollToTop from './components/functions/ScrollToTop'
 
 function App() {
   
@@ -12,10 +13,16 @@ function App() {
   return (
     <>
       <BrowserRouter>
+      <ScrollToTop />
       <Header />
         <Routes>
-            <Route index element={<Body />} />
-            <Route path='/:imageId' element={<ImagePage />} />
+            <Route path='/*' element={<Body />} />
+            <Route path='/photos/:imageId' element={<ImagePage />} />
+            <Route path='/invalid' element={
+              <div className='text-center text-white'>
+                  404
+              </div>
+            }/>
         </Routes>
 
       </BrowserRouter>

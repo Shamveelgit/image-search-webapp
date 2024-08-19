@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import RecImages from './RecImages'
 
 function ImagePage() {
+
+  const navigate = useNavigate()
 
   const dispatch = useDispatch()
 
@@ -12,15 +15,19 @@ function ImagePage() {
   const accessToken = useSelector(state => state.apiAccessToken)
 
   const [userLiked ,setUserLiked] = useState(false)
-
   const { imageId } = useParams()
 
-
-
-  // const [searchParam, setSearchParam] = useSearchParams()
-  // const cls = searchParam.get("name ")
-
   useEffect(() => {
+    
+    dispatch({
+      type : "create-RecImages",
+      payload : []
+    })
+
+    dispatch({
+      type : "page",
+      payload : 1
+    })
     let image = images.find((val) => val.id === imageId)
     if (image) {
       dispatch({
@@ -46,6 +53,7 @@ function ImagePage() {
             }, 2000)
           }
           else {
+            navigate('/invalid')            
             dispatch({
               type: "loadValue",
               payload: "Server Not Responding.."
@@ -58,7 +66,6 @@ function ImagePage() {
         }
         catch {
           console.log("catch called");
-
           console.log("Check your internet");
           dispatch({
             type: "loadValue",
@@ -75,29 +82,38 @@ function ImagePage() {
       fetchImages()
     }
     console.log('rendered');
-    
-  }, [])
+    return () => {
+      dispatch({
+        type : "create-RecImages",
+        payload : []
+      })
+    }
+  }, [imageId])
+
+  console.log(mainImage);
+  
+
 
   return (
     <>
       <main className='mt-[150px] flex justify-center items-center text-white'>
-        <section className='w-4/5 h-screen'>
-          <div className=" w-full border">
-            <img className='w-full h-96 object-contain rounded-lg' src={mainImage.urls?.regular} alt="" />
+        <section className='w-4/5'>
+          <div className=" w-full border rounded-xl">
+            <img className='w-full h-96 object-contain rounded-lg' src={mainImage.urls?.raw} alt="" />
           </div>
-          <div className=' p-10'>
+          <div className=' py-10 font-semibold font-Ui'>
               <h3>{mainImage.alt_description}</h3>
           </div>
           <div>
-              <div className='flex items-center gap-2'>
-              <svg className='w-9 h-12' onClick={() => {
-                if(userLiked) {
+              <div className='flex items-center gap-1'>
+              <svg className={`w-9 h-12`} onClick={() => {
+                if(userLiked && mainImage) {
                   setUserLiked(false)
-                  
+                  mainImage.likes = mainImage?.likes ?  mainImage.likes - 1  : null
                 }
-                else {
+                else if(mainImage){
                   setUserLiked(true)
-                  
+                  mainImage.likes = mainImage?.likes ?  mainImage.likes + 1  : null
                 }
               }} viewBox="0 0 48 48" version="1" xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 48 48" fill="#000000" stroke={mainImage.liked_by_user || userLiked ? "none" : '#fff' }><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill={mainImage.liked_by_user || userLiked ? "#b11b1b" : 'none' } d="M34,9c-4.2,0-7.9,2.1-10,5.4C21.9,11.1,18.2,9,14,9C7.4,9,2,14.4,2,21c0,11.9,22,24,22,24s22-12,22-24 C46,14.4,40.6,9,34,9z"></path> </g></svg>
               <p>{mainImage.likes}</p>
@@ -107,9 +123,8 @@ function ImagePage() {
               </div>
           </div>
         </section>
-        <div>
-        </div>
       </main>
+      <RecImages data={mainImage} imageId={imageId} />
 
     </>
   )

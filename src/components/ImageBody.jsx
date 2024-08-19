@@ -1,11 +1,18 @@
+import { useEffect } from "react"
+
 export default function ImageBody(props) {
 
     var {
-        images,
+        image,
         children
     } = props
 
     // console.log(children);
+    useEffect(() => {
+
+      console.log("image body");
+      
+    },[image])
     
 
   return (

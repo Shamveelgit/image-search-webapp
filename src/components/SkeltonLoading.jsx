@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function SkeletonLoading(props) {
   const dispatch = useDispatch()
   const page = useSelector(state => state.apiPage) 
-  const loadValue = useSelector(state => state.loadValue) 
+  // const loadValue = useSelector(state => state.loadValue) 
   const interSect = useSelector(state => state.intersectStatus) 
 
   const [isVisible, ref, setVisible] = useInterSection({
@@ -24,11 +24,11 @@ export default function SkeletonLoading(props) {
       setTimeout(() => {
         dispatch({
           type : "page",
-          payload : page + 1
+          payload : page+1
         })
       }, 1);
     }
-  }, [interSect,isVisible]);
+  }, [isVisible]);
 
   const skeletonClasses = 'relative group max-w-full h-auto rounded-lg bg-gray-600 animate-pulse';
 

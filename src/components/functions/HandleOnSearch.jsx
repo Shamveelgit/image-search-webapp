@@ -1,4 +1,15 @@
 async function handleOnSearch(apiUrl,page,searchValue,accessToken,dispatch) {
+
+
+  dispatch({
+    type : "create-images",
+    payload : []
+})
+  dispatch({
+    type : "page",
+    payload : 1
+  })
+
   try {
       const response = await fetch(`${apiUrl}/search/photos?page=${page}&query=${searchValue}&client_id=${accessToken}`);      
       const data = await response.json();
