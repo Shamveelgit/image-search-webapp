@@ -4,7 +4,7 @@ import { combineReducers, createStore } from "redux";
 
 const INITIAL_STATE = {
     apiUrl : "https://api.unsplash.com",
-    apiAccessToken :"JHFGRqSNi5MGfJgMmu_R_tfDweoxn2b_W7zI2ctvuTc",
+    apiAccessToken :"",
     apiPage : 1,
     images : [],
     searchValue : null,
