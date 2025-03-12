@@ -17,9 +17,9 @@ function ImageSection() {
   const page = useSelector(state => state.apiPage)
   const searchValue = useSelector(state => state.searchValue)
   const [screenWidth,setScreenWidth] = useState(window.innerWidth)
-
   const [imgLoading, setImgLoading] = useState(true)
   const imageTag = useRef()
+
 
   useEffect(() => {
     const handlingResize = () => {
@@ -38,7 +38,7 @@ function ImageSection() {
   // Combine only non-empty arrays
   const combineImages = [image_1, image_2, image_3, image_4].filter(Boolean);
   
-
+  
 
 
 
@@ -111,9 +111,6 @@ function ImageSection() {
                                   <div className={` group m-5 mb-0 rounded-lg bg-gray-600 break-inside-avoid relative aspect-auto min-h-40 `}>
                                   <img
                                   ref={imageTag}
-                                  onClick={()=> {
-                                    imageTag.current.style.animation = 'test ease 1s forwards'
-                                  }}
                                     onLoad={() => {
                                       setImgLoading(false)
                                     }}

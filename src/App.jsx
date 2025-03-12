@@ -9,10 +9,11 @@ import ScrollToTop from './components/functions/ScrollToTop'
 function App() {
   
   const [count, setCount] = useState(0)
+  
 
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename='green-life-gallery'>
       <ScrollToTop />
       <Header />
         <Routes>

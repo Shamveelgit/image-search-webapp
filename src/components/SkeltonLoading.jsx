@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import useInterSection from '../hooks/interSection';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function SkeletonLoading(props) {
@@ -10,12 +9,11 @@ export default function SkeletonLoading(props) {
   const interSect = useSelector(state => state.intersectStatus) 
 
   const [isVisible, ref, setVisible] = useInterSection({
-    threshold: 1
+    threshold: .5
   },interSect);
 
   useEffect(() => {
-    console.log(interSect);
-    if (isVisible && interSect) {
+    if (isVisible) {
       setVisible(false);
       dispatch({
         type : "intersect",

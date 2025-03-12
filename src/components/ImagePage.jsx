@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import RecImages from './RecImages'
@@ -6,7 +6,6 @@ import RecImages from './RecImages'
 function ImagePage() {
 
   const navigate = useNavigate()
-
   const dispatch = useDispatch()
 
   const images = useSelector(state => state.images)
@@ -17,13 +16,9 @@ function ImagePage() {
   const [userLiked ,setUserLiked] = useState(false)
   const { imageId } = useParams()
 
-  useEffect(() => {
-    
-    dispatch({
-      type : "create-RecImages",
-      payload : []
-    })
+  const likeSvg = useRef()
 
+  useEffect(() => {
     dispatch({
       type : "page",
       payload : 1
@@ -90,23 +85,22 @@ function ImagePage() {
     }
   }, [imageId])
 
-  console.log(mainImage);
   
 
 
   return (
     <>
-      <main className='mt-[150px] flex justify-center items-center text-white'>
-        <section className='w-4/5'>
-          <div className=" w-full border rounded-xl">
-            <img className='w-full h-96 object-contain rounded-lg' src={mainImage.urls?.raw} alt="" />
+      <main className='mt-[100px] flex justify-center items-center text-white flex-wrap'>
+        <section className=' m-10 flex-[80%] max-h-svh'>
+          <div className=" w-full flex items-center justify-center border rounded-xl overflow-hidden bg-center max-h-[27rem]">
+            <img className='max-w-full object-contain max-h-[27rem]  rounded-lg' src={mainImage.urls?.regular} alt="" />
           </div>
           <div className=' py-10 font-semibold font-Ui'>
               <h3>{mainImage.alt_description}</h3>
           </div>
           <div>
               <div className='flex items-center gap-1'>
-              <svg className={`w-9 h-12`} onClick={() => {
+              <svg ref={likeSvg} className={`w-9 h-12`} onClick={() => {
                 if(userLiked && mainImage) {
                   setUserLiked(false)
                   mainImage.likes = mainImage?.likes ?  mainImage.likes - 1  : null
@@ -124,11 +118,10 @@ function ImagePage() {
           </div>
         </section>
       </main>
-      <RecImages data={mainImage} imageId={imageId} />
+      <RecImages mainImage={mainImage} imageId={imageId} />
 
     </>
   )
 }
 
 export default ImagePage
-

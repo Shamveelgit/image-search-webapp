@@ -49,7 +49,7 @@ function SearchSection( props) {
                     handleOnSearch(apiUrl,page,searchValue,accessToken,dispatch)
                   }}
                   onChange={handleSearchChange}
-                  className="peer font-sans text-lg p-6 focus:border-none outline-none border-none focus:outline-offset-0 w-[40%] translate-y-[-50%] h-[3.5rem] text-pretty rounded-leftSide focus:outline-2 focus:outline-green-600"
+                  className=" max-md:text-xs max-md:h-6 peer font-sans text-lg p-6 focus:border-none outline-none border-none focus:outline-offset-0 w-[40%] translate-y-[-50%] h-[3.5rem] text-pretty rounded-leftSide focus:outline-2 focus:outline-green-600"
                   type="text"
                   placeholder="Search Images here"
               />
@@ -57,7 +57,7 @@ function SearchSection( props) {
                   onClick={() => {
                       handleOnSearch(apiUrl,page,searchValue,accessToken,dispatch)
                   }}
-                  className="peer-focus:outline-2 peer-focus:outline-offset-0 peer-focus:outline outline-green-600 text-gray-300 font-semibold hover:text-white w-[7rem] bg-green-600 h-[3.5rem] translate-y-[-50%] rounded-rightSide text-xl font-Ui"
+                  className=" max-md:h-12 max-md:text-sm peer-focus:outline-2 peer-focus:outline-offset-0 peer-focus:outline outline-green-600 text-gray-300 font-semibold hover:text-white w-[7rem] bg-green-600 h-[3.5rem] translate-y-[-50%] rounded-rightSide text-xl font-Ui"
               >
                   Search
               </button>
